@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#8B5E3C" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#130C04"  media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>Board Puzzle — Play</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+
+<body>
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
+  document.addEventListener('dragstart',   e => e.preventDefault());
+</script>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     GAME PAGE
+════════════════════════════════════════════════════════════════════════ -->
+<main class="game-page" id="gamePage">
+
+  <!-- ── Game header ──────────────────────────────────────────────────── -->
+  <header class="game-header" role="banner">
+
+    <!-- Exit -->
+    <button id="exitBtn" class="game-icon-btn" aria-label="Exit game" title="Exit to home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6"  y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Moves + Timer cluster -->
+    <div class="score-cluster" role="status" aria-live="polite" aria-label="Game status">
+      <div class="score-item">
+        <span class="score-label">Moves</span>
+        <span class="score-value" id="movesDisplay" aria-label="Move count">0</span>
+      </div>
+      <div class="score-divider" aria-hidden="true"></div>
+      <div class="score-item">
+        <span class="score-label">Time</span>
+        <span class="score-value" id="timerDisplay" aria-label="Elapsed time">0:00</span>
+      </div>
+    </div>
+
+    <!-- Sound + Pause -->
+    <div style="display:flex;gap:6px;">
+      <button id="soundBtn" class="game-icon-btn" aria-label="Toggle sound" title="Toggle sound">
+        <!-- Sound On icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>
+      </button>
+
+      <button id="pauseBtn" class="game-icon-btn" aria-label="Pause game" title="Pause">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <rect x="6"  y="4" width="4" height="16" rx="1"/>
+          <rect x="14" y="4" width="4" height="16" rx="1"/>
+        </svg>
+      </button>
+    </div>
+
+  </header><!-- /game-header -->
+
+  <!-- ── Board ────────────────────────────────────────────────────────── -->
+  <section class="board-wrap" aria-label="Puzzle board">
+    <div id="boardContainer"
+         role="grid"
+         aria-label="Sliding puzzle board"
+         data-size="3">
+      <!-- Tiles injected by game.js -->
+    </div>
+  </section>
+
+  <!-- ── Sub-header: mode / grid info ─────────────────────────────────── -->
+  <div class="game-sub-header" aria-live="polite">
+    <span id="gameMode">Classic</span>
+    <span class="dot" aria-hidden="true"></span>
+    <span id="gameGrid">3×3</span>
+  </div>
+
+  <!-- ── Controls ──────────────────────────────────────────────────────── -->
+  <nav class="game-controls" aria-label="Game controls">
+
+    <!-- Shuffle -->
+    <button id="shuffleBtn" class="ctrl-btn shuffle" aria-label="Shuffle board" title="Shuffle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <polyline points="16 3 21 3 21 8"/>
+        <line x1="4" y1="20" x2="21" y2="3"/>
+        <polyline points="21 16 21 21 16 21"/>
+        <line x1="15" y1="15" x2="21" y2="21"/>
+      </svg>
+      Shuffle
+    </button>
+
+    <!-- Undo -->
+    <button id="undoBtn" class="ctrl-btn" aria-label="Undo last move" title="Undo" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <polyline points="9 14 4 9 9 4"/>
+        <path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
+      </svg>
+      Undo
+    </button>
+
+    <!-- Redo -->
+    <button id="redoBtn" class="ctrl-btn" aria-label="Redo move" title="Redo" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <polyline points="15 14 20 9 15 4"/>
+        <path d="M4 20v-7a4 4 0 0 1 4-4h12"/>
+      </svg>
+      Redo
+    </button>
+
+    <!-- Eye (photo mode only, shown/hidden by JS) -->
+    <button id="eyeBtn" class="ctrl-btn eye" aria-label="Toggle number labels" title="Show/hide numbers" style="display:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      Numbers
+    </button>
+
+  </nav><!-- /game-controls -->
+
+</main><!-- /game-page -->
+
+
+<!-- ── Scripts ───────────────────────────────────────────────────────────── -->
+<script src="js/storage.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/board.js"></script>
+<script src="js/image.js"></script>
+<script src="js/animation.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/popup.js"></script>
+<script src="js/game.js"></script>
+
+</body>
+</html>
