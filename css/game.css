@@ -1,0 +1,346 @@
+/* ============================================================
+   Board Puzzle — game.css
+   Game screen: board, tiles, wood texture, controls, header.
+   ============================================================ */
+
+/* ── Page layout ────────────────────────────────────────────────────────── */
+.game-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100dvh;
+  background: var(--bg-page);
+  padding: 0 12px env(safe-area-inset-bottom, 16px);
+  padding-top: env(safe-area-inset-top, 0);
+  overflow: hidden;
+}
+
+/* ── Game header ─────────────────────────────────────────────────────────── */
+.game-header {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 4px 8px;
+  gap: 8px;
+}
+
+/* Exit / Pause buttons */
+.game-icon-btn {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-card);
+  border: 1.5px solid var(--divider);
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background 0.15s, transform 0.12s;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  position: relative; overflow: hidden;
+}
+.game-icon-btn:hover  { background: var(--bg-section); transform: translateY(-1px); }
+.game-icon-btn:active { transform: scale(0.93); }
+.game-icon-btn svg    { width: 20px; height: 20px; }
+.game-icon-btn.muted  { opacity: 0.55; }
+
+/* Score cluster */
+.score-cluster {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1.5px solid var(--divider);
+  border-radius: 14px;
+  padding: 8px 16px;
+  flex: 1;
+  justify-content: center;
+}
+
+.score-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.score-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.score-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+  text-align: center;
+}
+
+.score-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--divider);
+  flex-shrink: 0;
+}
+
+/* ── Board wrapper ───────────────────────────────────────────────────────── */
+.board-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  padding: 8px 0;
+  width: 100%;
+}
+
+/* The board itself — position: relative, tiles absolutely inside */
+#boardContainer {
+  background: var(--board-bg);
+  border-radius: 18px;
+  border: 3px solid var(--board-border);
+  box-shadow:
+    0 8px 32px var(--board-shadow),
+    0 2px 0 rgba(255,255,255,0.06) inset,
+    0 -3px 0 rgba(0,0,0,0.4) inset;
+  /* Wood grain simulation */
+  background-image:
+    repeating-linear-gradient(
+      92deg,
+      rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px,
+      transparent 1px, transparent 18px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px,
+      transparent 1px, transparent 22px
+    );
+  touch-action: none;
+  position: relative;
+}
+
+/* ── Tile base ───────────────────────────────────────────────────────────── */
+.tile {
+  position: absolute;
+  border-radius: var(--tile-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  -webkit-tap-highlight-color: transparent;
+  will-change: left, top;
+  /* Default: wood gradient */
+  background:
+    linear-gradient(
+      140deg,
+      var(--tile-top)  0%,
+      var(--tile-mid) 45%,
+      var(--tile-bot) 100%
+    );
+  border: 2px solid var(--tile-border);
+  box-shadow:
+    0 4px 10px var(--tile-shadow),
+    0 1px 0 rgba(255,255,255,0.22) inset,
+    0 -2px 0 rgba(0,0,0,0.25) inset;
+}
+
+/* Shine overlay on top portion */
+.tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 38%;
+  background: var(--tile-shine);
+  border-radius: var(--tile-radius) var(--tile-radius) 40% 40%;
+  pointer-events: none;
+}
+
+/* Wood grain lines on tile */
+.tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--tile-radius);
+  background:
+    repeating-linear-gradient(
+      105deg,
+      transparent 0px, transparent 6px,
+      rgba(0,0,0,0.025) 6px, rgba(0,0,0,0.025) 7px
+    );
+  pointer-events: none;
+}
+
+/* Number label inside tile */
+.tile-num {
+  position: relative;
+  z-index: 2;
+  color: var(--tile-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(14px, 5vw, 28px);
+  font-weight: 800;
+  text-shadow: 0 1px 3px rgba(255,255,255,0.15), 0 -1px 2px rgba(0,0,0,0.25);
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Dynamic font scaling by grid size (set via JS on boardContainer) */
+#boardContainer[data-size="3"] .tile-num { font-size: clamp(18px, 7vw, 34px); }
+#boardContainer[data-size="4"] .tile-num { font-size: clamp(15px, 5.5vw, 28px); }
+#boardContainer[data-size="5"] .tile-num { font-size: clamp(12px, 4vw, 22px); }
+
+/* ── Empty tile ──────────────────────────────────────────────────────────── */
+.tile.empty {
+  background: transparent;
+  border: 2px dashed rgba(255,255,255,0.08);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.35);
+  cursor: default;
+  pointer-events: none;
+}
+.tile.empty::before, .tile.empty::after { display: none; }
+
+/* ── Photo tile ──────────────────────────────────────────────────────────── */
+.tile.photo-tile {
+  background-image: var(--photo-bg, none); /* set inline via JS */
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-color: rgba(0,0,0,0.30);
+}
+
+.tile.photo-tile::after { display: none; } /* no grain lines on photos */
+
+/* Number overlay on photo tile */
+.tile.photo-tile .tile-num {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-size: clamp(10px, 3.5vw, 18px);
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.45);
+  border-radius: 5px;
+  padding: 1px 5px;
+  line-height: 1.4;
+}
+
+/* ── Tile hover / active ─────────────────────────────────────────────────── */
+.tile:not(.empty):hover {
+  filter: brightness(1.1);
+  transform: scale(1.03);
+  z-index: 10;
+}
+.tile:not(.empty):active {
+  transform: scale(0.97);
+  filter: brightness(0.95);
+}
+
+/* ── Sub-header (mode / grid info) ──────────────────────────────────────── */
+.game-sub-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  padding: 4px 0 8px;
+}
+
+.game-sub-header .dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.5;
+}
+
+/* ── Controls row ────────────────────────────────────────────────────────── */
+.game-controls {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 0 8px;
+}
+
+.ctrl-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--divider);
+  border-radius: 14px;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.15s, transform 0.12s, opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 64px;
+  position: relative; overflow: hidden;
+}
+.ctrl-btn:hover { background: var(--bg-section); transform: translateY(-2px); }
+.ctrl-btn:active { transform: scale(0.94); }
+.ctrl-btn:disabled { opacity: 0.30; cursor: not-allowed; pointer-events: none; }
+.ctrl-btn svg { width: 22px; height: 22px; }
+
+/* Shuffle is slightly more prominent */
+.ctrl-btn.shuffle {
+  background: var(--btn-primary-bg);
+  border-color: transparent;
+  color: var(--btn-primary-text);
+  box-shadow: 0 3px 12px var(--board-shadow);
+}
+.ctrl-btn.shuffle:hover { filter: brightness(1.1); }
+
+/* Eye button */
+.ctrl-btn.eye { display: none; } /* shown/hidden by JS for photo mode */
+.ctrl-btn.eye.eye-off { opacity: 0.55; }
+
+/* ── Solved highlight ────────────────────────────────────────────────────── */
+.tile.solved-flash {
+  animation: solvedFlash 0.5s ease forwards;
+}
+
+@keyframes solvedFlash {
+  0%   { filter: brightness(1); }
+  50%  { filter: brightness(1.35) saturate(1.4); }
+  100% { filter: brightness(1); }
+}
+
+/* ── Pause overlay (minimal, most handled by popup.css) ──────────────────── */
+.pause-shade {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  backdrop-filter: blur(3px);
+  display: none;
+}
+.pause-shade.visible { display: block; }
+
+/* ── Responsive tile sizes ───────────────────────────────────────────────── */
+@media (min-width: 480px) {
+  .game-header { padding: 16px 8px 10px; }
+}
+
+@media (max-height: 640px) and (orientation: landscape) {
+  .game-page { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .game-header { max-width: 320px; flex-wrap: wrap; }
+  .board-wrap { flex: unset; }
+  .game-controls { max-width: 320px; flex-wrap: wrap; }
+}
