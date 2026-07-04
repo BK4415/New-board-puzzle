@@ -1,0 +1,35 @@
+{
+  "name": "Board Puzzle",
+  "short_name": "Board Puzzle",
+  "description": "Premium offline sliding puzzle game with wood theme",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F5E6C8",
+  "theme_color": "#8B5E3C",
+  "categories": ["games", "puzzle"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "New Game",
+      "url": "/index.html",
+      "description": "Start a new puzzle"
+    }
+  ]
+}
