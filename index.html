@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#8B5E3C" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#130C04"  media="(prefers-color-scheme: dark)">
+  <meta name="description" content="Board Puzzle — Premium offline sliding puzzle game">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Board Puzzle">
+
+  <!-- Security: disable right-click / context menu -->
+  <meta name="format-detection" content="telephone=no">
+
+  <title>Board Puzzle</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+
+<body>
+<!-- ── Security: disable context menu & image save ──────────────────────── -->
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
+  document.addEventListener('dragstart',   e => e.preventDefault());
+</script>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════════════════════════════════════ -->
+<main class="home-page">
+
+  <!-- ── Top bar ──────────────────────────────────────────────────────── -->
+  <header class="top-bar" role="banner">
+    <!-- Info button (left) -->
+    <button id="infoBtn" class="icon-btn" aria-label="Information">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="16" x2="12" y2="12"/>
+        <line x1="12" y1="8"  x2="12.01" y2="8"/>
+      </svg>
+    </button>
+
+    <!-- App title (center placeholder) -->
+    <span class="sr-only">Board Puzzle</span>
+
+    <!-- Dashboard button (right) -->
+    <button id="dashBtn" class="icon-btn" aria-label="Dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ── Logo ─────────────────────────────────────────────────────────── -->
+  <section class="logo-area" aria-label="App logo">
+    <img src="assets/logo.png" alt="Board Puzzle logo" class="logo-img" loading="eager">
+    <h1 class="logo-name">Board Puzzle</h1>
+  </section>
+
+  <!-- ── Style selector ───────────────────────────────────────────────── -->
+  <section class="section" aria-label="Style selection">
+    <p class="section-label">Style</p>
+    <div class="style-selector" role="group" aria-label="Choose style">
+      <button class="style-btn" data-style="number" aria-pressed="true">🔢 Number</button>
+      <button class="style-btn" data-style="photo"  aria-pressed="false">🖼️ Photo</button>
+    </div>
+  </section>
+
+  <!-- ── Grid selector ────────────────────────────────────────────────── -->
+  <section class="section" aria-label="Grid size selection">
+    <p class="section-label">Grid</p>
+    <div class="grid-selector" role="group" aria-label="Choose grid size">
+      <button class="grid-btn active" data-grid="3" aria-pressed="true">3×3</button>
+      <button class="grid-btn"        data-grid="4" aria-pressed="false">4×4</button>
+      <button class="grid-btn"        data-grid="5" aria-pressed="false">5×5</button>
+    </div>
+  </section>
+
+  <!-- ── Mode selector (Number) ───────────────────────────────────────── -->
+  <section class="section" id="numModeSection" aria-label="Number mode selection">
+    <p class="section-label">Mode</p>
+    <div class="mode-selector" role="group" aria-label="Choose number mode">
+      <button class="mode-btn active" data-mode="classic"     aria-pressed="true">Classic</button>
+      <button class="mode-btn"        data-mode="snake"       aria-pressed="false">Snake</button>
+      <button class="mode-btn"        data-mode="spiral"      aria-pressed="false">Spiral</button>
+      <button class="mode-btn"        data-mode="upside-down" aria-pressed="false">Upside Down</button>
+    </div>
+  </section>
+
+  <!-- ── Preset selector (Photo) ──────────────────────────────────────── -->
+  <section class="section hidden" id="photoModeSection" aria-label="Photo preset selection">
+    <p class="section-label">Preset</p>
+    <div class="preset-selector" role="group" aria-label="Choose photo preset">
+      <button class="preset-btn active" data-preset="1" aria-pressed="true">Raj</button>
+      <button class="preset-btn"        data-preset="2" aria-pressed="false">Ronit</button>
+      <button class="preset-btn"        data-preset="3" aria-pressed="false">Aradhya</button>
+      <button class="preset-btn"        data-preset="4" aria-pressed="false">Lovely</button>
+      <button class="preset-btn"        data-preset="5" aria-pressed="false">Biklu</button>
+      <button class="upload-btn" id="uploadBtn" aria-label="Upload your image">
+        📷 Upload
+      </button>
+    </div>
+    <input type="file" id="photoUpload" accept="image/*" style="display:none" aria-hidden="true">
+  </section>
+
+  <!-- ── Live Preview ──────────────────────────────────────────────────── -->
+  <section class="preview-section" aria-label="Live board preview">
+    <div class="preview-card" aria-hidden="true">
+      <canvas id="previewCanvas" width="300" height="300" aria-label="Board preview"></canvas>
+    </div>
+  </section>
+
+  <!-- ── Start button ──────────────────────────────────────────────────── -->
+  <div class="start-btn-wrap">
+    <button id="startBtn" class="start-btn" aria-label="Start new game">
+      Start Game
+    </button>
+  </div>
+
+  <!-- ── Resume card (shown if unfinished game exists) ─────────────────── -->
+  <div class="resume-card" id="resumeCard" role="region" aria-label="Resume game">
+    <div class="resume-header">↩ Resume Game</div>
+    <div class="resume-info">
+      <span class="resume-badge resume-grid">3×3</span>
+      <span class="resume-badge resume-mode">Classic</span>
+      <span class="resume-badge resume-moves">0 moves</span>
+      <span class="resume-badge resume-time">0:00</span>
+    </div>
+    <button id="resumeBtn" class="resume-btn">Continue</button>
+  </div>
+
+</main><!-- /home-page -->
+
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     DASHBOARD DRAWER (left slide-in)
+════════════════════════════════════════════════════════════════════════ -->
+<aside id="dashDrawer" class="drawer" role="complementary" aria-label="Dashboard">
+  <div class="dash-inner">
+    <!-- Rendered dynamically by dashboard.js -->
+  </div>
+</aside>
+
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     INFO DRAWER (right slide-in)
+════════════════════════════════════════════════════════════════════════ -->
+<aside id="infoDrawer" class="drawer right" role="complementary" aria-label="Information">
+  <!-- Rendered dynamically by app.js buildInfoDrawer() -->
+</aside>
+
+
+<!-- ── Scripts (order matters — dependencies before consumers) ─────────── -->
+<script src="js/storage.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/board.js"></script>
+<script src="js/image.js"></script>
+<script src="js/animation.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/popup.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
