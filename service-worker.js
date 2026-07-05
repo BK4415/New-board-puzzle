@@ -4,7 +4,7 @@
  * Cache-first strategy: serve from cache, fall back to network.
  */
 
-const CACHE_NAME = 'board-puzzle-v1.0.0';
+const CACHE_NAME = 'board-puzzle-v1.1.0';
 
 const ASSETS_TO_CACHE = [
   '/index.html',
@@ -18,6 +18,7 @@ const ASSETS_TO_CACHE = [
   '/js/app.js',
   '/js/game.js',
   '/js/board.js',
+  '/js/icons.js',
   '/js/image.js',
   '/js/animation.js',
   '/js/storage.js',
