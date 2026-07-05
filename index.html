@@ -9,74 +9,72 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Board Puzzle">
-
-  <!-- Security: disable right-click / context menu -->
   <meta name="format-detection" content="telephone=no">
-
   <title>Board Puzzle</title>
-
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="assets/logo.png">
   <link rel="icon" type="image/png" href="assets/logo.png">
-
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/popup.css">
 </head>
-
 <body>
-<!-- ── Security: disable context menu & image save ──────────────────────── -->
 <script>
   document.addEventListener('contextmenu', e => e.preventDefault());
   document.addEventListener('selectstart', e => e.preventDefault());
   document.addEventListener('dragstart',   e => e.preventDefault());
 </script>
 
-<!-- ════════════════════════════════════════════════════════════════════════
-     HOME PAGE
-════════════════════════════════════════════════════════════════════════ -->
 <main class="home-page">
 
-  <!-- ── Top bar ──────────────────────────────────────────────────────── -->
+  <!-- ── Top bar ────────────────────────────────────────────────────── -->
   <header class="top-bar" role="banner">
-    <!-- Info button (left) -->
     <button id="infoBtn" class="icon-btn" aria-label="Information">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/>
         <line x1="12" y1="16" x2="12" y2="12"/>
-        <line x1="12" y1="8"  x2="12.01" y2="8"/>
+        <line x1="12" y1="8" x2="12.01" y2="8"/>
       </svg>
     </button>
-
-    <!-- App title (center placeholder) -->
     <span class="sr-only">Board Puzzle</span>
-
-    <!-- Dashboard button (right) -->
     <button id="dashBtn" class="icon-btn" aria-label="Dashboard">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1"/>
-        <rect x="14" y="3" width="7" height="7" rx="1"/>
-        <rect x="3" y="14" width="7" height="7" rx="1"/>
-        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="14" width="7" height="7" rx="1.5"/>
       </svg>
     </button>
   </header>
 
-  <!-- ── Logo ─────────────────────────────────────────────────────────── -->
+  <!-- ── Logo ───────────────────────────────────────────────────────── -->
   <section class="logo-area" aria-label="App logo">
     <img src="assets/logo.png" alt="Board Puzzle logo" class="logo-img" loading="eager">
     <h1 class="logo-name">Board Puzzle</h1>
   </section>
 
-  <!-- ── Style selector ───────────────────────────────────────────────── -->
+  <!-- ── Style selector ─────────────────────────────────────────────── -->
   <section class="section" aria-label="Style selection">
     <p class="section-label">Style</p>
     <div class="style-selector" role="group" aria-label="Choose style">
-      <button class="style-btn" data-style="number" aria-pressed="true">🔢 Number</button>
-      <button class="style-btn" data-style="photo"  aria-pressed="false">🖼️ Photo</button>
+      <button class="style-btn" data-style="number" aria-pressed="true">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/>
+          <line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>
+        </svg>
+        Number
+      </button>
+      <button class="style-btn" data-style="photo" aria-pressed="false">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        Photo
+      </button>
     </div>
   </section>
 
-  <!-- ── Grid selector ────────────────────────────────────────────────── -->
+  <!-- ── Grid selector ──────────────────────────────────────────────── -->
   <section class="section" aria-label="Grid size selection">
     <p class="section-label">Grid</p>
     <div class="grid-selector" role="group" aria-label="Choose grid size">
@@ -86,18 +84,53 @@
     </div>
   </section>
 
-  <!-- ── Mode selector (Number) ───────────────────────────────────────── -->
+  <!-- ── Number mode selector ───────────────────────────────────────── -->
   <section class="section" id="numModeSection" aria-label="Number mode selection">
     <p class="section-label">Mode</p>
     <div class="mode-selector" role="group" aria-label="Choose number mode">
-      <button class="mode-btn active" data-mode="classic"     aria-pressed="true">Classic</button>
-      <button class="mode-btn"        data-mode="snake"       aria-pressed="false">Snake</button>
-      <button class="mode-btn"        data-mode="spiral"      aria-pressed="false">Spiral</button>
-      <button class="mode-btn"        data-mode="upside-down" aria-pressed="false">Upside Down</button>
+
+      <button class="mode-btn active" data-mode="classic" aria-pressed="true">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <rect x="2" y="2" width="9" height="9" rx="1.5"/>
+          <rect x="13" y="2" width="9" height="9" rx="1.5"/>
+          <rect x="2" y="13" width="9" height="9" rx="1.5"/>
+          <rect x="13" y="13" width="9" height="9" rx="1.5" stroke-dasharray="3 2"/>
+        </svg>
+        Classic
+      </button>
+
+      <button class="mode-btn" data-mode="snake" aria-pressed="false">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="3 6 21 6"/>
+          <polyline points="21 6 21 12"/>
+          <polyline points="21 12 3 12"/>
+          <polyline points="3 12 3 18"/>
+          <polyline points="3 18 21 18"/>
+        </svg>
+        Snake
+      </button>
+
+      <button class="mode-btn" data-mode="spiral" aria-pressed="false">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M21 12a9 9 0 1 1-9-9"/>
+          <path d="M12 7a5 5 0 1 0 5 5"/>
+          <path d="M14 12a2 2 0 1 1-2-2"/>
+        </svg>
+        Spiral
+      </button>
+
+      <button class="mode-btn" data-mode="upside-down" aria-pressed="false">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="3" x2="12" y2="21"/>
+          <polyline points="19 14 12 21 5 14"/>
+        </svg>
+        Upside Down
+      </button>
+
     </div>
   </section>
 
-  <!-- ── Preset selector (Photo) ──────────────────────────────────────── -->
+  <!-- ── Photo preset selector ──────────────────────────────────────── -->
   <section class="section hidden" id="photoModeSection" aria-label="Photo preset selection">
     <p class="section-label">Preset</p>
     <div class="preset-selector" role="group" aria-label="Choose photo preset">
@@ -106,62 +139,73 @@
       <button class="preset-btn"        data-preset="3" aria-pressed="false">Aradhya</button>
       <button class="preset-btn"        data-preset="4" aria-pressed="false">Lovely</button>
       <button class="preset-btn"        data-preset="5" aria-pressed="false">Biklu</button>
-      <button class="upload-btn" id="uploadBtn" aria-label="Upload your image">
-        📷 Upload
+      <button class="upload-btn" id="uploadBtn" aria-label="Upload your own image">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Upload
       </button>
     </div>
     <input type="file" id="photoUpload" accept="image/*" style="display:none" aria-hidden="true">
   </section>
 
-  <!-- ── Live Preview ──────────────────────────────────────────────────── -->
+  <!-- ── Live Preview ────────────────────────────────────────────────── -->
   <section class="preview-section" aria-label="Live board preview">
     <div class="preview-card" aria-hidden="true">
       <canvas id="previewCanvas" width="300" height="300" aria-label="Board preview"></canvas>
     </div>
   </section>
 
-  <!-- ── Start button ──────────────────────────────────────────────────── -->
+  <!-- ── Start button ───────────────────────────────────────────────── -->
   <div class="start-btn-wrap">
     <button id="startBtn" class="start-btn" aria-label="Start new game">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="10 8 16 12 10 16 10 8"/>
+      </svg>
       Start Game
     </button>
   </div>
 
-  <!-- ── Resume card (shown if unfinished game exists) ─────────────────── -->
+  <!-- ── Resume card ────────────────────────────────────────────────── -->
   <div class="resume-card" id="resumeCard" role="region" aria-label="Resume game">
-    <div class="resume-header">↩ Resume Game</div>
+    <div class="resume-header">
+      <svg class="resume-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 4v6h6"/><path d="M23 20v-6h-6"/>
+        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+      </svg>
+      Resume Game
+    </div>
     <div class="resume-info">
       <span class="resume-badge resume-grid">3×3</span>
       <span class="resume-badge resume-mode">Classic</span>
       <span class="resume-badge resume-moves">0 moves</span>
       <span class="resume-badge resume-time">0:00</span>
     </div>
-    <button id="resumeBtn" class="resume-btn">Continue</button>
+    <button id="resumeBtn" class="resume-btn">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      Continue
+    </button>
   </div>
 
-</main><!-- /home-page -->
+</main>
 
-
-<!-- ════════════════════════════════════════════════════════════════════════
-     DASHBOARD DRAWER (left slide-in)
-════════════════════════════════════════════════════════════════════════ -->
+<!-- ── Dashboard Drawer ────────────────────────────────────────────────── -->
 <aside id="dashDrawer" class="drawer" role="complementary" aria-label="Dashboard">
-  <div class="dash-inner">
-    <!-- Rendered dynamically by dashboard.js -->
-  </div>
+  <div class="dash-inner"></div>
 </aside>
 
-
-<!-- ════════════════════════════════════════════════════════════════════════
-     INFO DRAWER (right slide-in)
-════════════════════════════════════════════════════════════════════════ -->
+<!-- ── Info Drawer ─────────────────────────────────────────────────────── -->
 <aside id="infoDrawer" class="drawer right" role="complementary" aria-label="Information">
-  <!-- Rendered dynamically by app.js buildInfoDrawer() -->
 </aside>
 
-
-<!-- ── Scripts (order matters — dependencies before consumers) ─────────── -->
+<!-- ── Scripts ────────────────────────────────────────────────────────── -->
 <script src="js/storage.js"></script>
+<script src="js/icons.js"></script>
 <script src="js/sound.js"></script>
 <script src="js/board.js"></script>
 <script src="js/image.js"></script>
@@ -169,6 +213,5 @@
 <script src="js/dashboard.js"></script>
 <script src="js/popup.js"></script>
 <script src="js/app.js"></script>
-
 </body>
 </html>
